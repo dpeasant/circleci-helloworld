@@ -1,78 +1,107 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
+# # Use the latest 2.1 version of CircleCI pipeline process engine.
+# # See: https://circleci.com/docs/2.0/configuration-reference
+# version: 2.1
+
+# # # Use a package of configuration called an orb.
+# # orbs:
+# #   # Declare a dependency on the welcome-orb
+# #   welcome: circleci/welcome-orb@0.4.1
+
+# # Define a job to be invoked later in a workflow.
+# # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+# jobs:
+#   # say-hello:
+#   #   # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+#   #   # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+#   #   docker:
+#   #     - image: cimg/base:stable
+#   #   # Add steps to the job
+#   #   # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+#   #   steps:
+#   #     - checkout
+#   #     - run:
+#   #         name: "Say hello"
+#   #         command: "echo Hello "
+#   # say-world:
+#   #   docker:
+#   #     - image: cimg/base:stable
+#   #   steps:
+#   #     - run:
+#   #         name: "Say world"
+#   #         command: "echo WRLD!"
+#   # say-shapes:
+#   #   docker:
+#   #     - image: cimg/base:stable
+#   #   steps:
+#   #     - run:
+#   #         name: "Say a shape"
+#   #         command: "echo $circlesquaretriangle"
+#   save-hello-world-output:
+#     docker:
+#       - image: cimg/base:stable
+#     steps:
+#       - run:
+#           name: "Output to text file"
+#           command: "echo 'random words in a text file' > stuff.txt"
+#       - persist_to_workplace:
+#           name: "Persist to workplace"
+#           root: ~/
+#           paths: 
+#             - stuff.txt
+#   print-output-file:
+#     docker:
+#       - image: cimg/base:stable
+#     steps:
+#       - attach_workplace:
+#           name: "Go to present working directory"
+#           at: ~/
+#       - run:
+#           name: show output
+#           command: "cat stuff.txt"
+
+# # Invoke jobs via workflows
+# # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+# workflows:
+#   say-hello-workflow:
+#     jobs:
+#       # - welcome/run
+#       # - say-hello
+#       # - say-world:
+#       #     requires:
+#       #       - say-hello
+#       # - say-shapes:
+#       #     requires:
+#       #       - say-world
+#       - save-hello-world-output
+#       - print-output-file:
+#             requires:
+#               - save-hello-world-output
+
 version: 2.1
 
-# # Use a package of configuration called an orb.
-# orbs:
-#   # Declare a dependency on the welcome-orb
-#   welcome: circleci/welcome-orb@0.4.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  # say-hello:
-  #   # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-  #   # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-  #   docker:
-  #     - image: cimg/base:stable
-  #   # Add steps to the job
-  #   # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: "Say hello"
-  #         command: "echo Hello "
-  # say-world:
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     - run:
-  #         name: "Say world"
-  #         command: "echo WRLD!"
-  # say-shapes:
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     - run:
-  #         name: "Say a shape"
-  #         command: "echo $circlesquaretriangle"
-  save-hello-world-output:
+  save_hello_world_output:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:13.8.0
     steps:
-      - run:
-          name: "Output to text file"
-          command: "echo 'random words in a text file' > stuff.txt"
-      - persist_to_workplace:
-          name: "Persist to workplace"
+      - run: echo "hello world" > ~/output.txt
+      - persist_to_workspace:
           root: ~/
-          paths: 
-            - stuff.txt
-  print-output-file:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - attach_workplace:
-          name: "Go to present working directory"
-          at: ~/
-      - run:
-          name: show output
-          command: "cat stuff.txt"
+          paths:
+            - output.txt
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  print_output_file:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/output.txt
+
 workflows:
-  say-hello-workflow:
+  my_workflow:
     jobs:
-      # - welcome/run
-      # - say-hello
-      # - say-world:
-      #     requires:
-      #       - say-hello
-      # - say-shapes:
-      #     requires:
-      #       - say-world
-      - save-hello-world-output
-      - print-output-file:
-            requires:
-              - save-hello-world-output
+      - save_hello_world_output
+      - print_output_file:
+          requires:
+            - save_hello_world_output
