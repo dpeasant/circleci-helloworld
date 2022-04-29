@@ -12,7 +12,7 @@ version: 2.1
 jobs:
   save-hello-world-output:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:13.8.0
     steps:
       - run:
           command: echo "random words in a text file" > ~/stuff.txt
@@ -22,7 +22,7 @@ jobs:
             - stuff.txt 
   print-output-file:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:13.8.0
     steps:
       - attach_workplace:
           at: ~/
