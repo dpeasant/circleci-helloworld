@@ -49,7 +49,7 @@ jobs:
           paths: workplace
   print-output-file:
     docker:
-      -image: cimg/base:stable
+      - image: cimg/base:stable
     steps:
       - attach_workplace:
           name: "Go to present working directory"
