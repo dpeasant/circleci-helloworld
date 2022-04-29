@@ -41,16 +41,11 @@ jobs:
       - image: cimg/base:stable
     steps:
       - run:
-          name: "Output to text file"
           command: "echo 'random words in a text file' > ~/stuff.txt"
-      # - persist_to_workplace:
-      #     root: ~/
-      #     paths: 
-      #       - stuff.txt
-      - persist_to_workspace:
-        root: ~/
-        paths:
-          - output.txt       
+      - persist_to_workplace:
+          root: ~/
+          paths: 
+            - stuff.txt 
   print-output-file:
     docker:
       - image: cimg/base:stable
