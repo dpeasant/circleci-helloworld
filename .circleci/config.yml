@@ -46,7 +46,8 @@ jobs:
       - persist_to_workplace:
           name: "Persist to workplace"
           root: ~/
-          paths: stuff.txt
+          paths: 
+            - stuff.txt
   print-output-file:
     docker:
       - image: cimg/base:stable
