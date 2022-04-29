@@ -66,11 +66,11 @@ workflows:
       # - say-hello
       # - say-world:
       #     requires:
-      #       - say-hello
+      #     - say-hello
       # - say-shapes:
       #     requires:
       #       - say-world
       - save-hello-world-output
       - print-output-file:
-            requires:
-              - save-hello-world-output
+          requires:
+            - save-hello-world-output
