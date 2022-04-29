@@ -66,6 +66,10 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
+      - save-hello-world-output
+      - print-output-file:
+          requires:
+            - save-hello-world-output
       # - welcome/run
       # - say-hello
       # - say-world:
@@ -74,7 +78,4 @@ workflows:
       # - say-shapes:
       #     requires:
       #       - say-world
-      - save-hello-world-output
-      - print-output-file:
-          requires:
-            - save-hello-world-output
+
