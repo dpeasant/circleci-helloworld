@@ -46,14 +46,14 @@ jobs:
       - persist_to_workplace:
           name: "Persist to workplace"
           root: /tmp
-          paths: workplace
+          paths: stuff.txt
   print-output-file:
     docker:
       - image: cimg/base:stable
     steps:
       - attach_workplace:
           name: "Go to present working directory"
-          at: /tmp/workplace
+          at: /tmp
       - run:
           name: show output
           command: "cat stuff.txt"
