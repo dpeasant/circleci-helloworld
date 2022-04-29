@@ -43,11 +43,15 @@ jobs:
       - run:
           name: "Output to text file"
           command: "echo 'random words in a text file' > ~/stuff.txt"
-      - persist_to_workplace:
-          name: "Persist to workplace"
+      # - persist_to_workplace:
+      #     name: "Persist to workplace"
+      #     root: ~/
+      #     paths: 
+      #       - stuff.txt
+      - persist_to_workspace:
           root: ~/
-          paths: 
-            - stuff.txt
+          paths:
+            - output.txt
   print-output-file:
     docker:
       - image: cimg/base:stable
@@ -62,7 +66,7 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hellos-workflow:
+  say-hello-workflow:
     jobs:
       # - welcome/run
       # - say-hello
