@@ -10,6 +10,25 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  save-hello-world-output:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          command: echo "random words in a text file" > ~/stuff.txt
+      - persist_to_workplace:
+          root: ~/
+          paths: 
+            - stuff.txt 
+  print-output-file:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - attach_workplace:
+          at: ~/
+      - run:
+          name: show output
+          command: cat stuff.txt
   # say-hello:
   #   # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
   #   # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -36,25 +55,7 @@ jobs:
   #     - run:
   #         name: "Say a shape"
   #         command: "echo $circlesquaretriangle"
-  save-hello-world-output:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - run:
-          command: echo "random words in a text file" > ~/stuff.txt
-      - persist_to_workplace:
-          root: ~/
-          paths: 
-            - stuff.txt 
-  print-output-file:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - attach_workplace:
-          at: ~/
-      - run:
-          name: show output
-          command: cat stuff.txt
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
